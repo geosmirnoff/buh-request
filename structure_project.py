@@ -3,7 +3,6 @@ import xml.etree.ElementTree as Tree
 import base64
 import zipfile
 import os
-from datetime import datetime
 
 
 def get_json(url):
@@ -44,19 +43,19 @@ def get_json(url):
 
     # ЗАПОЛНЯЕМ СПИСОК ВРЕМЕН
     for file in files:
-        stamp = os.path.getctime("JSON/" + file)
-        time = str(datetime.utcfromtimestamp(stamp).strftime('%d-%m-%Y %H:%M:%S'))
+        time = os.path.getctime("JSON/" + file)
         times.append(time)
 
     max_time = max(times)  # ИЩЕМ САМОЕ ПОСЛЕДНЕЕ ВРЕМЯ
 
     # ИЩЕМ ФАЙЛ С САМЫМ ПОСЛЕДНИМ ВРЕМЕНЕМ
     for file in files:
-        stamp = os.path.getctime("JSON/" + file)
-        time = str(datetime.utcfromtimestamp(stamp).strftime('%d-%m-%Y %H:%M:%S'))
+        time = os.path.getctime("JSON/" + file)
 
         if time == max_time:
             target_file = file  # ВОТ ОН
+        else:
+            os.remove("JSON/" + file)  # УДАЛЯЕМ СТАРЫЕ ФАЙЛЫ
 
     with open("JSON/" + target_file, "r", encoding='utf-8') as json:
         orders = json.read()
